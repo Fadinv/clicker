@@ -1,0 +1,209 @@
+@use 'styles/library'
+
+.BattleGround
+  font-size: 1em
+  width: 100%
+  height: 100%
+  border-radius: .5em
+  display: flex
+  flex-direction: row
+
+
+.LeftSideBar
+  width: 100%
+  display: flex
+  flex-direction: column
+  justify-content: center
+
+
+.LVLPanel
+  display: flex
+  flex-direction: row
+  text-align: center
+  min-height: 10vh
+  max-height: 10vh
+
+.LVLPanelText
+  padding: .5em
+  border-radius: .25em
+  margin: auto
+
+.MonsterBar
+  position: relative
+  min-height: 50vh
+  transition: opacity .3s ease-out
+
+.ScoreBar
+  width: 100%
+  height: 100%
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+.Store
+  display: grid
+  grid-template-columns: 1fr 1fr 1fr 1fr
+  grid-gap: 1vh
+
+.StoreItem
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  width: 100%
+
+.StoreItem > img
+  margin: auto
+  width: calc(100% - 2vh)
+  max-width: 5vh
+  max-height: 5vh
+
+.StoreItem > span
+  font-weight: 100
+  margin-top: .5em
+  font-size: .8rem
+  text-align: center
+
+.StoreItem > button
+  display: flex
+  flex-direction: row
+  text-align: center
+  align-items: center
+  cursor: pointer
+  padding: .5em 1em
+  margin-top: .5em
+  font-size: .8rem
+  background-color: library.$color_gray
+  color: library.$color_light-yellow
+  border: none
+  border-radius: .25em
+  box-shadow: 0 0 0 .2em rgba(23,20,20,.5)
+  transition: all .3s ease-out
+  &:hover
+    background-color: library.$color_black
+  &:focus
+    outline: none
+
+.NextLVL
+  font-size: 1rem
+  cursor: pointer
+  background-color: #f5cb5c
+  padding: .5em 1em
+  margin: 1em auto .5em
+  border: none
+  width: 50%
+  border-radius: .25em
+  box-shadow: 0 0 0 .2em rgba(23,20,20,.5)
+  &:focus
+    outline: none
+
+.HPBar
+  position: relative
+  border: .5vh solid library.$color_gray
+  display: flex
+  flex-direction: row
+  text-align: center
+  justify-content: center
+  max-height: 9vh
+
+.HPBarText
+  z-index: 2
+  margin: auto
+
+.GoldBar
+  display: flex
+  flex-direction: row
+  justify-content: left
+  align-items: center
+  padding: 1vh 2vh
+  max-height: 9vh
+
+.GoldBarText
+
+.GoldIcon
+  margin-left: .5em
+  width: 1.2rem
+  height: 1.2rem
+  max-width: .75em
+  display: block
+
+.ActiveBackground
+  position: absolute
+  z-index: 1
+  box-shadow: inset 0 0 .1em 0 white
+  height: 100%
+  left: 0
+  top: 0
+  transition: width .3s ease-out
+  background-color: rgba(100, 50, 110, .5)
+
+.ItemBar
+  width: 100%
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+.ItemBarTop
+  margin-top: 1vh
+  width: 100%
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
+.FlaskBox
+  position: relative
+  width: 33%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  text-align: center
+
+
+.FlaskClick
+  display: flex
+  cursor: pointer
+  flex-direction: column
+  padding: 1em 1em
+  justify-content: center
+  align-items: center
+  text-align: center
+  transition: all .3s ease-out
+  border-radius: 1em
+  &:hover
+    background-color: rgba(240, 240, 240, .2)
+
+.NumberOfFlasks
+  position: absolute
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  font-size: 1rem
+  left: 55%
+  top: 15%
+  width: 1.5em
+  height: 1.5em
+  border-radius: 50%
+  background-color: library.$color_gray
+
+.FlaskImage
+  margin: auto
+  width: calc(100% - 2vh)
+  max-width: 5vh
+  max-height: 5vh
+
+.FlaskText
+  font-weight: 100
+  margin-top: .5em
+  font-size: .8rem
+  text-align: center
+
+.RightSideBar
+  min-width: 30%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+
+
