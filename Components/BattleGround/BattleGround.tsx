@@ -6,18 +6,34 @@ import {flasks, FlaskType} from '../../data/flasks'
 import {GearType, myGear} from '../../data/gear'
 import {FlaskProps} from '../../pages'
 import SoundPanel from '../SoundPanel/SoundPanel'
+import StoreBar from '../StoreBar/StoreBar'
+import Store from '../Store/Store'
+import StoreFlasks from '../StoreFlasks/StoreFlasks'
+import {refreshSound} from '../../utils/utils'
+import MenuPage from '../MenuPage/MenuPage'
 
 interface BattleGroundProps {
     atmosphere: HTMLAudioElement
     setAtmosphere: Dispatch<SetStateAction<HTMLAudioElement>>
     atmosphereIsPlaying: boolean
     setAtmosphereIsPlaying: Dispatch<SetStateAction<boolean>>
+    drinkSound: HTMLAudioElement
+    setDrinkSound: Dispatch<SetStateAction<HTMLAudioElement>>
+    buySound: HTMLAudioElement
+    setBuySound: Dispatch<SetStateAction<HTMLAudioElement>>
+    hitSound: HTMLAudioElement
+    setHitSound: Dispatch<SetStateAction<HTMLAudioElement>>
+    triggerSound: HTMLAudioElement
+    setTriggerSound: Dispatch<SetStateAction<HTMLAudioElement>>
 
     volumeState: number
     setVolumeState: Dispatch<SetStateAction<number>>
 
     monstersState: number
     setMonstersState: Dispatch<SetStateAction<number>>
+
+    monstersLoaded: number
+    setMonstersLoaded: Dispatch<SetStateAction<number>>
 
     levelState: number
     setLevelState: Dispatch<SetStateAction<number>>
@@ -48,6 +64,10 @@ interface BattleGroundProps {
     isBattle: boolean
     setIsBattle: Dispatch<SetStateAction<boolean>>
 
+    numOfItemsLoaded: number
+    setNumOfItemsLoaded: Dispatch<SetStateAction<number>>
+    itemsIsLoaded: boolean
+    setItemsIsLoaded: Dispatch<SetStateAction<boolean>>
     flasksState: FlaskProps
     setFlasksState: Dispatch<SetStateAction<FlaskProps>>
 }
@@ -57,12 +77,22 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                                                        setAtmosphere,
                                                        atmosphereIsPlaying,
                                                        setAtmosphereIsPlaying,
+                                                       drinkSound,
+                                                       setDrinkSound,
+                                                       buySound,
+                                                       setBuySound,
+                                                       hitSound,
+                                                       setHitSound,
+                                                       triggerSound,
+                                                       setTriggerSound,
 
                                                        volumeState,
                                                        setVolumeState,
 
                                                        monstersState,
                                                        setMonstersState,
+                                                       monstersLoaded,
+                                                       setMonstersLoaded,
 
                                                        levelState,
                                                        setLevelState,
@@ -92,28 +122,38 @@ const BattleGround: React.FC<BattleGroundProps> = ({
 
                                                        isBattle,
                                                        setIsBattle,
-
+                                                       numOfItemsLoaded,
+                                                       setNumOfItemsLoaded,
+                                                       itemsIsLoaded,
+                                                       setItemsIsLoaded,
                                                        flasksState,
                                                        setFlasksState,
                                                    }) => {
-    const monster = myMonsters[levelState]
+    const monsters = myMonsters[levelState]
+    let i = 0
+
+    const itemsLoader = () => {
+        if (itemsIsLoaded) return
+        if (numOfItemsLoaded + 1 === flasks.length + myGear.length) {
+            setItemsIsLoaded(true)
+        }
+
+        setNumOfItemsLoaded(prev => ++prev)
+    }
 
     useEffect(() => {
         if (monstersState === 0 && isBattle) {
+            setMonstersLoaded(() => 0)
             setTimeout(() => {
                 setLevelComplete(true)
                 setIsBattle(false)
-            }, 300)
+            }, 500)
         }
     })
 
-    const drinkSound = (): void => {
-        const drink = new Audio('/audio/samples-flask.mp3')
-        drink.volume = volumeState / 10000
-        drink.autoplay = true
-    }
-
     const startGame = () => {
+
+        refreshSound(volumeState, setHitSound, setDrinkSound, setBuySound, setTriggerSound, setHitSound)
         setLevelState(0)
         setLevelComplete(false)
     }
@@ -124,6 +164,11 @@ const BattleGround: React.FC<BattleGroundProps> = ({
         clearInterval(flasksState.gold.intervalId)
         clearInterval(flasksState.god.intervalId)
         clearInterval(flasksState.shadow.intervalId)
+
+        refreshSound(volumeState, setHitSound, setDrinkSound, setBuySound, setTriggerSound, setHitSound)
+
+        setItemsIsLoaded(false)
+        setNumOfItemsLoaded(0)
 
         setLevelState(0)
         setMaxHpState(100)
@@ -173,78 +218,80 @@ const BattleGround: React.FC<BattleGroundProps> = ({
 
     if (gameOver) {
         return (
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                color: '#f5cb5c',
-            }}>
-                <div style={{
-                    marginBottom: '1em',
-                }}>О боже! Проиграть было не сложно
-                </div>
+            <MenuPage text={'О боже! Проиграть было не сложно...'}>
+                <SoundPanel
+                    atmosphere={atmosphere}
+                    setAtmosphere={setAtmosphere}
+                    atmosphereIsPlaying={atmosphereIsPlaying}
+                    setAtmosphereIsPlaying={setAtmosphereIsPlaying}
+                    drinkSound={drinkSound}
+                    setDrinkSound={setDrinkSound}
+                    buySound={buySound}
+                    setBuySound={setBuySound}
+                    hitSound={hitSound}
+                    setHitSound={setHitSound}
+                    triggerSound={triggerSound}
+                    setTriggerSound={setTriggerSound}
+
+                    volumeState={volumeState}
+                    setVolumeState={setVolumeState}
+                />
+
                 <button className={styles.NextLVL} onClick={reload}>Начать заного!</button>
-            </div>
+            </MenuPage>
         )
     }
 
     if (levelComplete === true && levelState + 1 === myMonsters.length) {
         return (
 
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                color: '#f5cb5c',
-            }}>
-                <div style={{
-                    marginBottom: '1em',
-                    textAlign: 'center',
-                    width: '100%',
-                }}>Поздравляю! Вы прошли эту жестокую игру
-                </div>
+            <MenuPage text={'Поздравляю! Вы прошли эту жестокую игру'}>
                 <SoundPanel
                     atmosphere={atmosphere}
                     setAtmosphere={setAtmosphere}
                     atmosphereIsPlaying={atmosphereIsPlaying}
                     setAtmosphereIsPlaying={setAtmosphereIsPlaying}
+                    drinkSound={drinkSound}
+                    setDrinkSound={setDrinkSound}
+                    buySound={buySound}
+                    setBuySound={setBuySound}
+                    hitSound={hitSound}
+                    setHitSound={setHitSound}
+                    triggerSound={triggerSound}
+                    setTriggerSound={setTriggerSound}
 
                     volumeState={volumeState}
                     setVolumeState={setVolumeState}
                 />
 
-
                 <button className={styles.NextLVL} onClick={reload}>Начать заного!</button>
-            </div>
+            </MenuPage>
         )
     }
 
-    if (monster === undefined) {
+    if (monsters === undefined) {
         return (
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                color: '#f5cb5c',
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                <div style={{
-                    marginBottom: '1em',
-                    textAlign: 'center',
-                    width: '100%',
-                }}>Приветствую!
-                </div>
-
+            <MenuPage text={'Приветствую!'}>
                 <SoundPanel
                     atmosphere={atmosphere}
                     setAtmosphere={setAtmosphere}
                     atmosphereIsPlaying={atmosphereIsPlaying}
                     setAtmosphereIsPlaying={setAtmosphereIsPlaying}
+                    drinkSound={drinkSound}
+                    setDrinkSound={setDrinkSound}
+                    buySound={buySound}
+                    setBuySound={setBuySound}
+                    hitSound={hitSound}
+                    setHitSound={setHitSound}
+                    triggerSound={triggerSound}
+                    setTriggerSound={setTriggerSound}
 
                     volumeState={volumeState}
                     setVolumeState={setVolumeState}
                 />
+
                 <button className={styles.NextLVL} onClick={startGame}>Начать игру</button>
-            </div>
+            </MenuPage>
         )
     }
 
@@ -254,9 +301,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
         const type = e.target.dataset.flaskType
 
         setFlasksState(prevState => {
-            const sample = new Audio('/audio/samples-buy.mp3')
-            sample.volume = volumeState / 10000
-            sample.autoplay = true
+            if (buySound) {
+                buySound.currentTime = 0
+                buySound.play()
+            }
 
             let newState = Object.assign({}, prevState)
             newState[type].value += 1
@@ -275,9 +323,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
         const type = e.target.dataset.gearType as GearType
         const bonus = +e.target.dataset.bonus as number
 
-        const sample = new Audio('/audio/samples-buy.mp3')
-        sample.volume = volumeState / 10000
-        sample.autoplay = true
+        if (buySound) {
+            buySound.currentTime = 0
+            buySound.play()
+        }
 
         switch (type) {
             case 'health':
@@ -314,6 +363,8 @@ const BattleGround: React.FC<BattleGroundProps> = ({
     }
 
     const nextLVL = () => {
+        setItemsIsLoaded(false)
+        setNumOfItemsLoaded(0)
         setLevelComplete(false)
         setLevelState(prev => ++prev)
     }
@@ -337,7 +388,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                     if (prev === maxHpState) {
                         return maxHpState
                     }
-                    drinkSound()
+                    if (drinkSound) {
+                        drinkSound.currentTime = 0
+                        drinkSound.play()
+                    }
                     setFlasksState(prevState => {
                         let newState = Object.assign({}, prevState)
                         newState[type].value -= 1
@@ -349,7 +403,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                 })
                 break
             case 'armor':
-                drinkSound()
+                if (drinkSound) {
+                    drinkSound.currentTime = 0
+                    drinkSound.play()
+                }
                 setFlasksState(prevState => {
                     let newState = Object.assign({}, prevState)
                     newState[type].value -= 1
@@ -369,7 +426,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                 setArmorPlayer(prev => ++prev)
                 break
             case 'attack':
-                drinkSound()
+                if (drinkSound) {
+                    drinkSound.currentTime = 0
+                    drinkSound.play()
+                }
                 setFlasksState(prevState => {
                     let newState = Object.assign({}, prevState)
                     newState[type].value -= 1
@@ -388,7 +448,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                 setDamagePlayer(prev => ++prev)
                 break
             case 'gold':
-                drinkSound()
+                if (drinkSound) {
+                    drinkSound.currentTime = 0
+                    drinkSound.play()
+                }
                 setFlasksState(prevState => {
                     let newState = Object.assign({}, prevState)
                     newState[type].value -= 1
@@ -407,7 +470,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                 setBonusGoldPlayer(prev => prev += 5)
                 break
             case 'god':
-                drinkSound()
+                if (drinkSound) {
+                    drinkSound.currentTime = 0
+                    drinkSound.play()
+                }
                 setFlasksState(prevState => {
                     let newState = Object.assign({}, prevState)
                     newState[type].value -= 1
@@ -426,7 +492,10 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                 setArmorPlayer(prev => prev += 50)
                 break
             case 'shadow':
-                drinkSound()
+                if (drinkSound) {
+                    drinkSound.currentTime = 0
+                    drinkSound.play()
+                }
                 let random = Math.round(Math.random() * 2 + 1)
                 setFlasksState(prevState => {
                     let newState = Object.assign({}, prevState)
@@ -453,7 +522,6 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                                 let newState = Object.assign({}, prev)
                                 newState[type].intervalId = null
                                 newState[type].active = false
-                                console.log(newState)
                                 return newState
                             })
                         }, 10000)
@@ -485,76 +553,93 @@ const BattleGround: React.FC<BattleGroundProps> = ({
             <div className={styles.LeftSideBar}>
                 {/*ТЕКУЩИЙ УРОВЕНЬ*/}
                 <div className={styles.LVLPanel}>
-                    <span className={styles.LVLPanelText}>Уровень {levelState + 1}</span>
+                    <span className={styles.LVLPanelText}>Уровень {levelState + 1}
+                        <img src={'/skull.svg'} alt={''} className={styles.StatsImage}/>
+                    </span>
                     <span style={{
                         backgroundColor: damagePlayer <= 0 ? 'rgba(255, 55, 35, .7)' : 'rgba(0,0,0,.1)',
-                    }} className={styles.LVLPanelText}>Урон: {damagePlayer}</span>
+                    }} className={styles.LVLPanelText}>Урон: {damagePlayer}
+                        <img src={'/sword.svg'} alt={''} className={styles.StatsImage}/>
+                    </span>
                     <span style={{
                         backgroundColor: armorPlayer <= -1 ? 'rgba(255, 55, 35, .7)' : 'rgba(0,0,0,.1)',
-                    }} className={styles.LVLPanelText}>Броня: {armorPlayer}</span>
+                    }} className={styles.LVLPanelText}>Броня: {armorPlayer}
+                        <img src={'/shield.svg'} alt={''} className={styles.StatsImage}/>
+                    </span>
                     <span style={{
                         backgroundColor: bonusGoldPlayer <= -1 ? 'rgba(255, 55, 35, .7)' : 'rgba(0,0,0,.1)',
-                    }} className={styles.LVLPanelText}>Доп. золото: {bonusGoldPlayer}</span>
+                    }} className={styles.LVLPanelText}>Доп. золото: {bonusGoldPlayer}
+                        <img src={'/coin-stats.svg'} alt={''} className={styles.StatsImage}/>
+                    </span>
                 </div>
 
 
                 {/*ПОЛЕ БОЯ С МОНСТРОМ*/}
                 <div className={styles.MonsterBar}>
                     {levelComplete
-                        ? <div className={styles.ScoreBar}>
-                            <div className={styles.Store}>
-                                {flasks.map((flask, key) => {
-                                    return (
-                                        <div key={key} className={styles.StoreItem}>
-                                            <img src={flask.src} alt=""/>
+                        ? <StoreBar itemsIsLoaded={itemsIsLoaded}>
+                            <Store>
+                                <StoreFlasks>
+                                    {flasks.map((flask, key) => {
+                                        return (
+                                            <div onLoad={itemsLoader} key={key} className={styles.StoreItem}>
+                                                <img src={flask.src} alt=""/>
 
-                                            <span>{flask.title}</span>
+                                                <span>{flask.title}</span>
+                                                <span>{flask.info}</span>
 
-                                            <button
-                                                data-flask-type={flask.type}
-                                                data-cost={flask.price}
-                                                onClick={buyFlask}
-                                            >
-                                                купить {flask.price}
-                                                <img className={styles.GoldIcon}
-                                                     data-flask-type={flask.type}
-                                                     data-cost={flask.price}
-                                                     src={'/coin.svg'}
-                                                     alt={''}/>
-                                            </button>
-                                        </div>
-                                    )
-                                })}
-                                {myGear.map((gear, key) => {
-                                    return (
-                                        <div key={key} className={styles.StoreItem}>
-                                            <img src={gear.src} alt=""/>
+                                                <button
+                                                    data-flask-type={flask.type}
+                                                    data-cost={flask.price}
+                                                    onClick={buyFlask}
+                                                >
+                                                    купить {flask.price}
+                                                    <img className={styles.GoldIcon}
+                                                         data-flask-type={flask.type}
+                                                         data-cost={flask.price}
+                                                         src={'/coin.svg'}
+                                                         alt={''}/>
+                                                </button>
+                                            </div>
+                                        )
+                                    })}
+                                </StoreFlasks>
+                                <StoreFlasks>
+                                    {myGear.map((gear, key) => {
+                                        return (
+                                            <div onLoad={itemsLoader} key={key} className={styles.StoreItem}>
+                                                <img src={gear.src} alt=""/>
 
-                                            <span>{gear.title}</span>
+                                                <span>{gear.title}</span>
+                                                <span>{gear.info}</span>
 
-                                            <button
-                                                onClick={buyGear}
-                                                data-gear-type={gear.type}
-                                                data-bonus={gear.bonus}
-                                                data-cost={gear.price}
-                                            >купить {gear.price}
-                                                <img className={styles.GoldIcon}
-                                                     data-gear-type={gear.type}
-                                                     data-bonus={gear.bonus}
-                                                     data-cost={gear.price}
-                                                     src={'/coin.svg'}
-                                                     alt={''}/>
-                                            </button>
-                                        </div>
-                                    )
-                                })}
-
-
-                            </div>
+                                                <button
+                                                    onClick={buyGear}
+                                                    data-gear-type={gear.type}
+                                                    data-bonus={gear.bonus}
+                                                    data-cost={gear.price}
+                                                >купить {gear.price}
+                                                    <img className={styles.GoldIcon}
+                                                         data-gear-type={gear.type}
+                                                         data-bonus={gear.bonus}
+                                                         data-cost={gear.price}
+                                                         src={'/coin.svg'}
+                                                         alt={''}/>
+                                                </button>
+                                            </div>
+                                        )
+                                    })}
+                                </StoreFlasks>
+                            </Store>
                             <button onClick={nextLVL} className={styles.NextLVL}>Следующий уровень</button>
-                        </div>
-                        : monster.map((monster, key) => {
+                        </StoreBar>
+                        : monsters.map(monster => {
                             return <Monster
+                                hitSound={hitSound}
+                                setHitSound={setHitSound}
+                                triggerSound={triggerSound}
+                                setTriggerSound={setTriggerSound}
+
                                 volumeState={volumeState}
                                 setVolumeState={setVolumeState}
 
@@ -566,6 +651,9 @@ const BattleGround: React.FC<BattleGroundProps> = ({
 
                                 monstersState={monstersState}
                                 setMonstersState={setMonstersState}
+                                monstersLoaded={monstersLoaded}
+                                setMonstersLoaded={setMonstersLoaded}
+                                maxMonstersState={monsters.length}
 
                                 hpState={hpState}
                                 setHpState={setHpState}

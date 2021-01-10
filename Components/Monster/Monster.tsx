@@ -18,8 +18,16 @@ interface MonsterProps {
         clearTrigger: () => void
     })
 
+    hitSound: HTMLAudioElement
+    setHitSound: Dispatch<SetStateAction<HTMLAudioElement>>
+    triggerSound: HTMLAudioElement
+    setTriggerSound: Dispatch<SetStateAction<HTMLAudioElement>>
+
     monstersState: number
     setMonstersState: Dispatch<SetStateAction<number>>
+    monstersLoaded: number
+    setMonstersLoaded: Dispatch<SetStateAction<number>>
+    maxMonstersState: number
 
     volumeState: number
     setVolumeState: Dispatch<SetStateAction<number>>
@@ -58,6 +66,14 @@ const Monster: React.FC<MonsterProps> = ({
 
                                              monstersState,
                                              setMonstersState,
+                                             monstersLoaded,
+                                             setMonstersLoaded,
+                                             maxMonstersState,
+
+                                             hitSound,
+                                             setHitSound,
+                                             triggerSound,
+                                             setTriggerSound,
 
                                              volumeState,
                                              setVolumeState,
@@ -93,8 +109,6 @@ const Monster: React.FC<MonsterProps> = ({
 
     const [clearTrigger, setClearTrigger] = useState<() => void | null>(null)
 
-    const [monsterIsClear, setMonsterIsClear] = useState<boolean>(false)
-
     const [isRendered, setIsRendered] = useState<boolean>(false)
 
     const [intervalId, setIntervalId] = useState<NodeJS.Timeout>(null)
@@ -111,17 +125,26 @@ const Monster: React.FC<MonsterProps> = ({
 
     const [isTriggering, setIsTriggering] = useState<boolean>(false)
 
+    const imageLoad = (e) => {
+        if (isBattle) return
+        setMonstersState(prev => ++prev)
+        if (monstersLoaded + 1 === maxMonstersState) {
+            setIsBattle(true)
+        }
+        setMonstersLoaded(prev => ++prev)
+    }
+
     useEffect(() => {
         if (hpState <= 0) {
             setMonstersState(prev => --prev)
             clearInterval(intervalId)
             clearInterval(triggerId)
+            setMonstersLoaded(0)
             setTimeout(() => setGameOver(true), 0)
         }
 
-        if (!isRendered) {
-            setMonstersState(prev => ++prev)
-            if (!isBattle) setIsBattle(true)
+        if (!isRendered && isBattle) {
+            setIsRendered(true)
             setIntervalId(() => {
                 return setInterval(() => {
                     if (monsterDmg <= armorPlayer) return
@@ -130,7 +153,6 @@ const Monster: React.FC<MonsterProps> = ({
                     setDamageState(dmg)
                 }, monsterDamageTimeout)
             })
-            setIsRendered(true)
         }
 
         if (damageState !== monsterDmg - armorPlayer && !monsterIsDead) {
@@ -157,20 +179,22 @@ const Monster: React.FC<MonsterProps> = ({
     const monsterHit = () => {
         if (levelComplete) return
         if (monsterIsDead) return
-
         if (isTriggering) {
-            const triggerSound = new Audio('/audio/samples-trigger.mp3')
-            triggerSound.volume = volumeState / 10000
-            triggerSound.autoplay = true
+            if (triggerSound) {
+                triggerSound.currentTime = 0
+                triggerSound.play()
+            }
         } else {
-            const triggerSound = new Audio('/audio/samples-hit1.mp3')
-            triggerSound.volume = volumeState / 10000
-            triggerSound.autoplay = true
+            if (hitSound) {
+                hitSound.currentTime = 0
+                hitSound.play()
+            }
         }
 
         if (!callBackIsUsed) {
             monsterCallBack(setCallBackIsUsed, monsterHPState, setMonsterHPState, setHpState, setDamageState, setArmorPlayer, setGoldState, setBonusGoldPlayer, monstersState)
         }
+
         if (!triggerIsUsed) {
             let triggerResult = trigger(
                 setTriggerIsUsed,
@@ -196,22 +220,26 @@ const Monster: React.FC<MonsterProps> = ({
 
     return (
         <div style={{
-            cursor: monsterIsDead ? 'default' : 'pointer',
-            opacity: monsterIsDead ? '0' : '1',
+            cursor: monsterIsDead || !isBattle ? 'default' : 'pointer',
+            opacity: monsterIsDead || !isBattle ? '0' : '1',
             left: position.left,
             top: position.top,
             backgroundColor: isTriggering ? 'rgba(255, 55, 35, .7)' : 'rgba(0,0,0,.1)',
         }} onClick={monsterHit} className={styles.Monster}>
+            <div className={styles.MonsterStats}>
+                <div className={styles.InfoBox}>{monsterDmg} <img src={'/sword.svg'} alt={''} className={styles.StatsImage}/></div>
+                <div className={styles.InfoBox}>{coinsForClick} <img src={'/coin-stats.svg'} alt={''} className={styles.StatsImage}/></div>
+            </div>
+
             <img onMouseDown={(e) => {
                 e.preventDefault()
                 return false
-            }} src={src} alt=''/>
+            }} onLoad={imageLoad} className={styles.MonsterImage} src={src} alt=''/>
+
             <div style={{
                 width: 100 * monsterHPState / monsterHP + '%',
                 backgroundColor: monsterHPState / monsterHP <= 0.3 ? 'red' : 'green',
-            }} className={styles.MonsterHpBar}>
-
-            </div>
+            }} className={styles.MonsterHpBar}/>
         </div>
     )
 }

@@ -9,6 +9,14 @@ interface SoundPanelProps {
     setAtmosphere: Dispatch<SetStateAction<HTMLAudioElement>>
     atmosphereIsPlaying: boolean
     setAtmosphereIsPlaying: Dispatch<SetStateAction<boolean>>
+    drinkSound: HTMLAudioElement
+    setDrinkSound: Dispatch<SetStateAction<HTMLAudioElement>>
+    buySound: HTMLAudioElement
+    setBuySound: Dispatch<SetStateAction<HTMLAudioElement>>
+    hitSound: HTMLAudioElement
+    setHitSound: Dispatch<SetStateAction<HTMLAudioElement>>
+    triggerSound: HTMLAudioElement
+    setTriggerSound: Dispatch<SetStateAction<HTMLAudioElement>>
 }
 
 const SoundPanel: React.FC<SoundPanelProps> = ({
@@ -16,6 +24,15 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                                                    setAtmosphere,
                                                    atmosphereIsPlaying,
                                                    setAtmosphereIsPlaying,
+                                                   drinkSound,
+                                                   setDrinkSound,
+                                                   buySound,
+                                                   setBuySound,
+                                                   hitSound,
+                                                   setHitSound,
+                                                   triggerSound,
+                                                   setTriggerSound,
+
                                                    volumeState,
                                                    setVolumeState,
                                                }) => {
@@ -33,11 +50,35 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
     const soundOn = () => {
         setAtmosphereIsPlaying(true)
 
-        const audio = new Audio('/audio/atmosphere.mp3')
-        audio.loop = true
-        audio.autoplay = true
-        audio.volume = volumeState / 10000
-        setAtmosphere(audio)
+        const atmosphere = new Audio('/audio/atmosphere.mp3')
+        atmosphere.loop = true
+        atmosphere.autoplay = true
+        atmosphere.volume = volumeState / 10000
+        setAtmosphere(atmosphere)
+
+        const drink = new Audio('/audio/samples-flask.mp3')
+        drink.loop = false
+        drink.autoplay = false
+        drink.volume = volumeState / 10000
+        setDrinkSound(drink)
+
+        const buy = new Audio('/audio/samples-buy.mp3')
+        buy.loop = false
+        buy.autoplay = false
+        buy.volume = volumeState / 10000
+        setBuySound(buy)
+
+        const trigger = new Audio('/audio/samples-trigger.mp3')
+        trigger.loop = false
+        trigger.autoplay = false
+        trigger.volume = volumeState / 10000
+        setTriggerSound(trigger)
+
+        const hit = new Audio('/audio/samples-hit1.mp3')
+        hit.loop = false
+        hit.autoplay = false
+        hit.volume = volumeState / 10000
+        setHitSound(hit)
     }
 
     const onAndOffVolume = (e) => {
@@ -45,7 +86,6 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
         if (volumeState === 0) {
             if (prevVolume === 0) {
-                console.log('nen')
                 setVolumeState(1000)
                 //audio
                 let volume = 0.1
@@ -68,7 +108,6 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
             setVolumeState(prevVolume)
 
-            //audio
             if (atmosphere) atmosphere.volume = volume
 
             return
@@ -121,7 +160,6 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
             atmosphere.volume = volume
             return 'calc(100% - 3vh)'
         }
-
         if (r === undefined) r = 0.0001
 
         let result = Math.round(10000 * r / sliderWidth)
@@ -129,6 +167,8 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
         setVolumeState(result)
 
         let volume = result / 10000
+        if (volume > 1) volume = 1
+        if (volume < 0) volume = 0
         atmosphere.volume = volume
 
         return result / 100 + '%'
@@ -137,13 +177,23 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
     const scrollStart = (e) => {
 
         const scroll = scrollRef.current.getBoundingClientRect()
-        const scrollX = scroll.x
+        let scrollX: number
+        if (scroll.x) {
+            scrollX = scroll.x
+        } else if (scroll.left) {
+            scrollX = scroll.left
+        }
+
 
         const slider = sliderRef.current.getBoundingClientRect()
         sliderWidth = slider.width
-        sliderPosX = slider.x
 
-        maxValue = sliderWidth + slider.x - scroll.width
+        if (slider.x) {
+            sliderPosX = slider.x
+        } else if (slider.left) {
+            sliderPosX = slider.left
+        }
+        maxValue = sliderWidth + sliderPosX - scroll.width
 
         if (e.pageX) {
             shiftX = e.pageX - scrollX
@@ -160,42 +210,44 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
     return (
         <div className={styles.SoundPanel}>
-            {atmosphereIsPlaying ? <> <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                <div>volume: {Math.round(volumeState / 100)}</div>
-
-                <button onClick={onAndOffVolume} className={styles.SoundButton}>
-                    <img onMouseDown={(e) => {
-                        e.preventDefault()
-                        return false
-                    }} className={styles.SoundImg} src="/volume-on.svg" alt=""/>
-                </button>
-            </div>
-
-            <div ref={sliderRef} className={styles.slider}>
+            {atmosphereIsPlaying ? <>
                 <div style={{
-                    width: `calc(${1.5 + volumeState / 100}% + 1vh)`,
-                }} className={styles.ActiveBackground}>
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <div>volume: {Math.round(volumeState / 100)}</div>
 
+                    <button onClick={onAndOffVolume} className={styles.SoundButton}>
+                        <img onMouseDown={(e) => {
+                            e.preventDefault()
+                            return false
+                        }} className={styles.SoundImg} src={volumeState === 0 ? '/volume-off.svg' : '/volume-on.svg'} alt=""/>
+                    </button>
                 </div>
 
-                <div
-                    onTouchStart={scrollStart}
-                    onMouseDown={scrollStart}
+                <div ref={sliderRef} className={styles.slider}>
+                    <div style={{
+                        width: `calc(${volumeState / 100}% + 1.65vh)`,
+                    }} className={styles.ActiveBackground}>
 
-                    ref={scrollRef}
-                    className={styles.scroll}
+                    </div>
 
-                    style={{
-                        left: volumeState < 9700 ? `${volumeState / 10000}` : 'calc(100% - 3vh)'
-                    }}
-                >
+                    <div
+                        onTouchStart={scrollStart}
+                        onMouseDown={scrollStart}
+
+                        ref={scrollRef}
+                        className={styles.scroll}
+
+                        style={{
+                            left: volumeState < 9700 ? `${volumeState / 100}%` : 'calc(100% - 3vh)',
+                        }}
+                    >
+                    </div>
                 </div>
-            </div> </> : <button onClick={soundOn} className={styles.OnMusic}>Включить звуковое сопровождение</button>}
+            </> : <button onClick={soundOn} className={styles.OnMusic}>Включить звуковое сопровождение</button>}
 
         </div>
     )

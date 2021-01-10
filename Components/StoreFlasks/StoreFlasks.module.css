@@ -1,0 +1,22 @@
+/* autoprefixer grid: autoplace */
+
+.StoreFlasks {
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 2vh;
+    padding: .5vh 5vw;
+}
+
+.heightContainer {
+    height: auto;
+    display: block;
+    width: 100%;
+}
+
+@media (max-width: 20em) {
+    .StoreFlasks {
+        grid-template-columns:1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+}

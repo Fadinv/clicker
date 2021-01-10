@@ -1,24 +1,35 @@
+export type Position = {
+    left: string
+    top: string
+}
+
+type TriggerResponse = {
+    timeoutId: NodeJS.Timeout | null
+    clearTrigger: () => void
+}
+
 export type Monster = {
     src: string
-    position: {
-        left: string
-        top: string
-    },
+    position: Position,
     coinsForClick: number
     monsterHP: number
     monsterDmg: number
     monsterDamageTimeout: number
     monsterId: number
     callback: <T>(...T) => void
-    trigger: (...args) => ({
-        timeoutId: NodeJS.Timeout | null
-        clearTrigger: () => void
-    }),
+    trigger: (...args) => TriggerResponse,
 }
+
+export const defaultCallback = (...args) => {}
+
+export const defaultTrigger = (...args) => ({
+    timeoutId: null,
+    clearTrigger: () => {},
+})
 
 export const monster1: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster1.svg',
         position: {
             left: 'calc(50% - 7.5vh)',
             top: '20%',
@@ -28,17 +39,14 @@ export const monster1: Monster[] = [
         monsterDmg: 1,
         monsterDamageTimeout: 1000,
         monsterId: 1,
-        callback: (...arg) => {},
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        callback: defaultCallback,
+        trigger: defaultTrigger,
     },
 ]
 
 export const monster2: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster2.svg',
         position: {
             left: 'calc(50% - 7.5vh)',
             top: '20%',
@@ -48,18 +56,14 @@ export const monster2: Monster[] = [
         monsterDmg: 2,
         monsterDamageTimeout: 1000,
         monsterId: 2,
-        callback: (...arg) => {
-        },
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        callback: defaultCallback,
+        trigger: defaultTrigger,
     },
 ]
 
 export const monster3: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster3.svg',
         position: {
             left: 'calc(50% - 17vh)',
             top: '20%',
@@ -69,14 +73,11 @@ export const monster3: Monster[] = [
         monsterDmg: 2,
         monsterDamageTimeout: 1000,
         monsterId: 3,
-        callback: (...arg) => {},
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        callback: defaultCallback,
+        trigger: defaultTrigger,
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster3.svg',
         position: {
             left: 'calc(50% + 2vh)',
             top: '20%',
@@ -86,17 +87,14 @@ export const monster3: Monster[] = [
         monsterDmg: 2,
         monsterDamageTimeout: 1000,
         monsterId: 4,
-        callback: (...arg) => {},
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        callback: defaultCallback,
+        trigger: defaultTrigger,
     },
 ]
 
 export const monster4: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster4.svg',
         position: {
             left: 'calc(50% - 7.5vh)',
             top: '10%',
@@ -143,14 +141,11 @@ export const monster4: Monster[] = [
                     },
                 }
             }
-            return {
-                timeoutId: null,
-                clearTrigger: () => {}
-            }
+            return defaultTrigger()
         },
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster5.svg',
         position: {
             left: 'calc(50% + 7.5vh)',
             top: '50%',
@@ -167,13 +162,10 @@ export const monster4: Monster[] = [
                 setGoldState(prev => prev += 10)
             }
         },
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        trigger: defaultTrigger,
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster5.svg',
         position: {
             left: 'calc(50% - 22.5vh)',
             top: '50%',
@@ -190,16 +182,13 @@ export const monster4: Monster[] = [
                 setGoldState(prev => prev += 50)
             }
         },
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        trigger: defaultTrigger,
     },
 ]
 
 export const monster5: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster6.svg',
         position: {
             left: 'calc(50% - 7.5vh)',
             top: '20%',
@@ -237,12 +226,13 @@ export const monster5: Monster[] = [
                             setArmorPlayer(prev => prev += 3)
                             setIsTriggering(false)
                         }, 0)
-                    }
+                    },
                 })
             }
             return ({
                 timeoutId: null,
-                clearTrigger: () => {}
+                clearTrigger: () => {
+                },
             })
         },
     },
@@ -250,7 +240,7 @@ export const monster5: Monster[] = [
 
 export const monster6: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster7.svg',
         position: {
             left: 'calc(50% - 22.5vh)',
             top: '20%',
@@ -269,13 +259,10 @@ export const monster6: Monster[] = [
                 setMonsterHPState(120)
             }
         },
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        trigger: defaultTrigger,
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster8.svg',
         position: {
             left: 'calc(50% + 7.5vh)',
             top: '20%',
@@ -285,17 +272,14 @@ export const monster6: Monster[] = [
         monsterDmg: 5,
         monsterDamageTimeout: 1000,
         monsterId: 10,
-        callback: (...arg) => {},
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        callback: defaultCallback,
+        trigger: defaultTrigger,
     },
 ]
 
 export const monster7: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster9.svg',
         position: {
             left: 'calc(50% - 7.5vh)',
             top: '10%',
@@ -342,14 +326,11 @@ export const monster7: Monster[] = [
                     },
                 }
             }
-            return {
-                timeoutId: null,
-                clearTrigger: () => {}
-            }
+            return defaultTrigger()
         },
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster10.svg',
         position: {
             left: 'calc(50% + 7.5vh)',
             top: '50%',
@@ -366,13 +347,10 @@ export const monster7: Monster[] = [
                 setGoldState(prev => prev += 100)
             }
         },
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        trigger: defaultTrigger,
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster10.svg',
         position: {
             left: 'calc(50% - 22.5vh)',
             top: '50%',
@@ -389,16 +367,13 @@ export const monster7: Monster[] = [
                 setGoldState(prev => prev += 100)
             }
         },
-        trigger: (...args) => ({
-            timeoutId: null,
-            clearTrigger: () => {}
-        }),
+        trigger: defaultTrigger,
     },
 ]
 
 export const monster8: Monster[] = [
     {
-        src: 'monster1.svg',
+        src: '/monsters/boss.svg',
         position: {
             left: 'calc(50% - 7.5vh)',
             top: '10%',
@@ -445,14 +420,11 @@ export const monster8: Monster[] = [
                     },
                 }
             }
-            return {
-                timeoutId: null,
-                clearTrigger: () => {}
-            }
+            return defaultTrigger()
         },
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster11.svg',
         position: {
             left: 'calc(50% + 7.5vh)',
             top: '50%',
@@ -499,14 +471,11 @@ export const monster8: Monster[] = [
                     },
                 }
             }
-            return {
-                timeoutId: null,
-                clearTrigger: () => {}
-            }
+            return defaultTrigger()
         },
     },
     {
-        src: 'monster1.svg',
+        src: '/monsters/monster11.svg',
         position: {
             left: 'calc(50% - 22.5vh)',
             top: '50%',
@@ -553,10 +522,7 @@ export const monster8: Monster[] = [
                     },
                 }
             }
-            return {
-                timeoutId: null,
-                clearTrigger: () => {}
-            }
+            return defaultTrigger()
         },
     },
 ]

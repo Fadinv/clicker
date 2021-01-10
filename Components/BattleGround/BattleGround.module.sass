@@ -19,14 +19,24 @@
 .LVLPanel
   display: flex
   flex-direction: row
+  justify-content: space-around
+  margin-top: .5em
   text-align: center
-  min-height: 10vh
-  max-height: 10vh
+  width: 100%
+  height: auto
 
 .LVLPanelText
-  padding: .5em
+  padding: .25em .5em
   border-radius: .25em
-  margin: auto
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+
+.StatsImage
+  width: 1em
+  height: 1em
+  margin-left: .5em
 
 .MonsterBar
   position: relative
@@ -41,6 +51,7 @@
   justify-content: space-between
 
 .Store
+  width: 100%
   display: grid
   grid-template-columns: 1fr 1fr 1fr 1fr
   grid-gap: 1vh
@@ -60,7 +71,6 @@
 
 .StoreItem > span
   font-weight: 100
-  margin-top: .5em
   font-size: .8rem
   text-align: center
 
@@ -88,16 +98,17 @@
   font-size: 1rem
   cursor: pointer
   background-color: #f5cb5c
-  padding: .5em 1em
-  margin: 1em auto .5em
+  padding: .35em .7em
+  margin: 0.5em auto 0
   border: none
-  width: 50%
+  width: 40%
   border-radius: .25em
   box-shadow: 0 0 0 .2em rgba(23,20,20,.5)
   &:focus
     outline: none
 
 .HPBar
+  margin-top: .5em
   position: relative
   border: .5vh solid library.$color_gray
   display: flex
@@ -107,6 +118,7 @@
   max-height: 9vh
 
 .HPBarText
+  width: 100%
   z-index: 2
   margin: auto
 

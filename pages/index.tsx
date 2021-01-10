@@ -17,6 +17,10 @@ export interface FlaskProps {
     shadow: AloneFlaskProps
 }
 
+const loadedAudio = async (src) => {
+
+}
+
 export default function Home() {
 
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
@@ -25,6 +29,11 @@ export default function Home() {
 
     const [atmosphereIsPlaying, setAtmosphereIsPlaying] = useState<boolean>(false)
     const [atmosphere, setAtmosphere] = useState<HTMLAudioElement | null>(null)
+
+    const [drinkSound, setDrinkSound] = useState<HTMLAudioElement | null>(null)
+    const [buySound, setBuySound] = useState<HTMLAudioElement | null>(null)
+    const [hitSound, setHitSound] = useState<HTMLAudioElement | null>(null)
+    const [triggerSound, setTriggerSound] = useState<HTMLAudioElement | null>(null)
 
     const [levelState, setLevelState] = useState<number>(-1)
     const [maxHpState, setMaxHpState] = useState<number>(100)
@@ -38,7 +47,11 @@ export default function Home() {
     const [bonusGoldPlayer, setBonusGoldPlayer] = useState<number>(0)
 
     const [monstersState, setMonstersState] = useState<number>(0)
+    const [monstersLoaded, setMonstersLoaded] = useState<number>(0)
     const [isBattle, setIsBattle] = useState<boolean>(false)
+
+    const [numOfItemsLoaded, setNumOfItemsLoaded] = useState<number>(0)
+    const [itemsIsLoaded, setItemsIsLoaded] = useState<boolean>(false)
 
     const [flasksState, setFlasksState] = useState<FlaskProps>({
         health: {
@@ -83,6 +96,14 @@ export default function Home() {
         <div className={styles.Home}>
 
             {isLoaded ? <BattleGround
+                drinkSound={drinkSound}
+                setDrinkSound={setDrinkSound}
+                buySound={buySound}
+                setBuySound={setBuySound}
+                hitSound={hitSound}
+                setHitSound={setHitSound}
+                triggerSound={triggerSound}
+                setTriggerSound={setTriggerSound}
                 atmosphere={atmosphere}
                 setAtmosphere={setAtmosphere}
                 atmosphereIsPlaying={atmosphereIsPlaying}
@@ -96,11 +117,18 @@ export default function Home() {
 
                 monstersState={monstersState}
                 setMonstersState={setMonstersState}
+                monstersLoaded={monstersLoaded}
+                setMonstersLoaded={setMonstersLoaded}
 
                 armorPlayer={armorPlayer}
                 setArmorPlayer={setArmorPlayer}
                 bonusGoldPlayer={bonusGoldPlayer}
                 setBonusGoldPlayer={setBonusGoldPlayer}
+
+                numOfItemsLoaded={numOfItemsLoaded}
+                setNumOfItemsLoaded={setNumOfItemsLoaded}
+                itemsIsLoaded={itemsIsLoaded}
+                setItemsIsLoaded={setItemsIsLoaded}
 
                 flasksState={flasksState}
                 setFlasksState={setFlasksState}
