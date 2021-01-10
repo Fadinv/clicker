@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect} from 'react'
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react'
 import styles from './BattleGround.module.sass'
 import {myMonsters} from '../../data/monsters'
 import Monster from '../Monster/Monster'
@@ -147,7 +147,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
             setTimeout(() => {
                 setLevelComplete(true)
                 setIsBattle(false)
-            }, 500)
+            }, 0)
         }
     })
 
@@ -164,7 +164,6 @@ const BattleGround: React.FC<BattleGroundProps> = ({
         clearInterval(flasksState.gold.intervalId)
         clearInterval(flasksState.god.intervalId)
         clearInterval(flasksState.shadow.intervalId)
-
         refreshSound(volumeState, setHitSound, setDrinkSound, setBuySound, setTriggerSound, setHitSound)
 
         setItemsIsLoaded(false)

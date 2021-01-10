@@ -10,13 +10,12 @@ const MenuPage: React.FC<MenuPageProps> = ({text, children}) => {
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
     useEffect(() => {
-        if (isLoaded) return
-        setIsLoaded(true)
+        if (!isLoaded) setTimeout(() => {setIsLoaded(true)}, 100)
     })
 
     return (
         <div style={{opacity: isLoaded ? '1' : '0'}}
-            className={styles.MenuPage}>
+             className={styles.MenuPage}>
 
             <div className={styles.Text}>
                 {text}
