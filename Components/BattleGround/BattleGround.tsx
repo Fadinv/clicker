@@ -710,7 +710,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                             <div onClick={useFlask} data-num={flasksState.health.value} data-flask-type={'health'}
                                  className={styles.FlaskClick}>
                                 <span className={styles.NumberOfFlasks}>{flasksState.health.value}</span>
-                                <img className={styles.FlaskImage} src="/flask2.svg" alt=""/>
+                                <img className={styles.FlaskImage} src="/flasks/health.svg" alt=""/>
                                 <span className={styles.FlaskText}>Зелье здоровья</span>
                             </div>
                         </div>
@@ -719,7 +719,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                             <div onClick={useFlask} data-num={flasksState.armor.value} data-flask-type={'armor'}
                                  className={styles.FlaskClick}>
                                 <span className={styles.NumberOfFlasks}>{flasksState.armor.value}</span>
-                                <img className={styles.FlaskImage} src="/flask3.svg" alt=""/>
+                                <img className={styles.FlaskImage} src="/flasks/armor.svg" alt=""/>
                                 <span className={styles.FlaskText}>Зелье брони</span>
                             </div>
                         </div>
@@ -728,7 +728,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                             <div onClick={useFlask} data-num={flasksState.attack.value} data-flask-type={'attack'}
                                  className={styles.FlaskClick}>
                                 <span className={styles.NumberOfFlasks}>{flasksState.attack.value}</span>
-                                <img className={styles.FlaskImage} src="/flask1.svg" alt=""/>
+                                <img className={styles.FlaskImage} src="/flasks/attack.svg" alt=""/>
                                 <span className={styles.FlaskText}>Зелье атаки</span>
                             </div>
                         </div>
@@ -740,7 +740,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                             <div onClick={useFlask} data-num={flasksState.gold.value} data-flask-type={'gold'}
                                  className={styles.FlaskClick}>
                                 <span className={styles.NumberOfFlasks}>{flasksState.gold.value}</span>
-                                <img className={styles.FlaskImage} src="/flask1.svg" alt=""/>
+                                <img className={styles.FlaskImage} src="/flasks/gold.svg" alt=""/>
                                 <span data-use={'gold'} className={styles.FlaskText}>Зелье золота</span>
                             </div>
                         </div>
@@ -749,7 +749,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                             <div onClick={useFlask} data-num={flasksState.god.value} data-flask-type={'god'}
                                  className={styles.FlaskClick}>
                                 <span className={styles.NumberOfFlasks}>{flasksState.god.value}</span>
-                                <img className={styles.FlaskImage} src="/flask1.svg" alt=""/>
+                                <img className={styles.FlaskImage} src="/flasks/god.svg" alt=""/>
                                 <span className={styles.FlaskText}>Зелье бога</span>
                             </div>
                         </div>
@@ -758,7 +758,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
                             <div onClick={useFlask} data-num={flasksState.shadow.value} data-flask-type={'shadow'}
                                  className={styles.FlaskClick}>
                                 <span className={styles.NumberOfFlasks}>{flasksState.shadow.value}</span>
-                                <img className={styles.FlaskImage} src="/flask1.svg" alt=""/>
+                                <img className={styles.FlaskImage} src="/flasks/shadow.svg" alt=""/>
                                 <span className={styles.FlaskText}>Зелье пустоты</span>
                             </div>
                         </div>
