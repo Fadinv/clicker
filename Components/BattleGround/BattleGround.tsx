@@ -147,7 +147,7 @@ const BattleGround: React.FC<BattleGroundProps> = ({
             setTimeout(() => {
                 setLevelComplete(true)
                 setIsBattle(false)
-            }, 0)
+            }, 500)
         }
     })
 
