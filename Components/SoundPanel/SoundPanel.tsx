@@ -56,6 +56,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
         atmosphere.loop = true
         atmosphere.autoplay = true
         atmosphere.volume = 0
+        document.documentElement.append(atmosphere);
         setAtmosphere(atmosphere)
 
         const drink = new Audio('/audio/samples-flask.mp3')
