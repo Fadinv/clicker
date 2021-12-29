@@ -218,7 +218,8 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                     alignItems: 'center',
                 }}>
                     <div>volume: {Math.round(volumeState / 100)}</div>
-
+                    <div>atmosphere volume = {atmosphere.volume}</div>
+                    <div>atmosphere json = {JSON.stringify(atmosphere)}</div>
                     <button onClick={onAndOffVolume} className={styles.SoundButton}>
                         <img onMouseDown={(e) => {
                             e.preventDefault()
