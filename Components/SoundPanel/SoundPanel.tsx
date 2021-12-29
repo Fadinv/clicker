@@ -54,9 +54,8 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
         const atmosphere = new Audio('/audio/atmosphere.mp3')
         atmosphere.loop = true
         atmosphere.autoplay = true
-        atmosphere.onvolumechange = (ev) => {
-            alert(JSON.stringify(ev))
-        }
+        atmosphere.controls = true
+        atmosphere.volume = volumeValue
         setAtmosphere(atmosphere)
 
         const drink = new Audio('/audio/samples-flask.mp3')
@@ -221,8 +220,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                     alignItems: 'center',
                 }}>
                     <div>volume: {Math.round(volumeState / 100)}</div>
-                    <div>atmosphere volume = {atmosphere.volume}</div>
-                    <div>atmosphere json</div>
+                    <audio src={'/audio/atmosphere.mp3'}>Трек</audio>
                     <button onClick={onAndOffVolume} className={styles.SoundButton}>
                         <img onMouseDown={(e) => {
                             e.preventDefault()
