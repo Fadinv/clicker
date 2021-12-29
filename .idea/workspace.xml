@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b11d0324-c785-4eb7-a8b7-46ceac28c9fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/BattleGround/BattleGround.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Components/BattleGround/BattleGround.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/flasks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/flasks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Components/MenuPage/MenuPage.module.sass" beforeDir="false" afterPath="$PROJECT_DIR$/Components/MenuPage/MenuPage.module.sass" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/Home.module.sass" beforeDir="false" afterPath="$PROJECT_DIR$/styles/Home.module.sass" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +24,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.TypeScript" />
-    <property name="ts.external.directory.path" value="C:\Users\js\Desktop\Programming project\games\clicker\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -46,6 +47,7 @@
       <workItem from="1610193782421" duration="39925000" />
       <workItem from="1610305139618" duration="3134000" />
       <workItem from="1610532484607" duration="666000" />
+      <workItem from="1640789313074" duration="451000" />
     </task>
     <servers />
   </component>
