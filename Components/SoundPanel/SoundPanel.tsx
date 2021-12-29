@@ -54,8 +54,9 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
         const atmosphere = new Audio('/audio/atmosphere.mp3')
         atmosphere.loop = true
         atmosphere.autoplay = true
-        atmosphere.defaultMuted = false;
-        atmosphere.volume = volumeValue
+        atmosphere.onvolumechange = (ev) => {
+            alert(JSON.stringify(ev))
+        }
         setAtmosphere(atmosphere)
 
         const drink = new Audio('/audio/samples-flask.mp3')
@@ -210,7 +211,6 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
         document.documentElement.addEventListener('touchend', scrollEnd)
     }
 
-    console.log(JSON.stringify(atmosphere), atmosphere)
     return (
         <div className={styles.SoundPanel}>
             {atmosphereIsPlaying ? <>
