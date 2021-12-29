@@ -52,10 +52,10 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
         const volumeValue = Math.round(volumeState / 100) / 100
 
         const atmosphere = new Audio('/audio/atmosphere.mp3')
+        atmosphere.id = 'atmosphere'
         atmosphere.loop = true
         atmosphere.autoplay = true
-        atmosphere.controls = true
-        atmosphere.volume = volumeValue
+        atmosphere.volume = 0
         setAtmosphere(atmosphere)
 
         const drink = new Audio('/audio/samples-flask.mp3')
@@ -91,7 +91,8 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                 setVolumeState(1000)
                 //audio
                 let volume = 0.1
-                if (atmosphere) atmosphere.volume = volume
+                const audio = document.getElementById('atmosphere') as HTMLAudioElement
+                if (audio) audio.volume = volume
 
                 scroll.style.left = '10%'
 
@@ -110,14 +111,16 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
             setVolumeState(prevVolume)
 
-            if (atmosphere) atmosphere.volume = volume
+            const audio = document.getElementById('atmosphere') as HTMLAudioElement
+            if (audio) audio.volume = volume
 
             return
         }
 
         scroll.style.left = '0'
 
-        if (atmosphere) atmosphere.volume = 0
+        const audio = document.getElementById('atmosphere') as HTMLAudioElement
+        if (audio) audio.volume = 0
 
         setPrevVolume(volumeState)
         setVolumeState(0)
@@ -220,7 +223,8 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                     alignItems: 'center',
                 }}>
                     <div>volume: {Math.round(volumeState / 100)}</div>
-                    <audio controls src={'/audio/atmosphere.mp3'}>Трек</audio>
+                    <div>atmosphere volume = {atmosphere.volume}</div>
+                    <div>atmosphere json {JSON.stringify(atmosphere.isContentEditable)}</div>
                     <button onClick={onAndOffVolume} className={styles.SoundButton}>
                         <img onMouseDown={(e) => {
                             e.preventDefault()
