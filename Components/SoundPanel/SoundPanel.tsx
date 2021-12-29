@@ -220,7 +220,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                     alignItems: 'center',
                 }}>
                     <div>volume: {Math.round(volumeState / 100)}</div>
-                    <audio src={'/audio/atmosphere.mp3'}>Трек</audio>
+                    <audio controls src={'/audio/atmosphere.mp3'}>Трек</audio>
                     <button onClick={onAndOffVolume} className={styles.SoundButton}>
                         <img onMouseDown={(e) => {
                             e.preventDefault()
