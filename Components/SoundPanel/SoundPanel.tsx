@@ -49,35 +49,37 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
     const soundOn = () => {
         setAtmosphereIsPlaying(true)
+        const volumeValue = Math.round(volumeState / 100) / 100
 
         const atmosphere = new Audio('/audio/atmosphere.mp3')
         atmosphere.loop = true
         atmosphere.autoplay = true
-        atmosphere.volume = 0
+        atmosphere.defaultMuted = false;
+        atmosphere.volume = volumeValue
         setAtmosphere(atmosphere)
 
         const drink = new Audio('/audio/samples-flask.mp3')
         drink.loop = false
         drink.autoplay = false
-        drink.volume = volumeState / 10000
+        drink.volume = volumeValue
         setDrinkSound(drink)
 
         const buy = new Audio('/audio/samples-buy.mp3')
         buy.loop = false
         buy.autoplay = false
-        buy.volume = volumeState / 10000
+        buy.volume = volumeValue
         setBuySound(buy)
 
         const trigger = new Audio('/audio/samples-trigger.mp3')
         trigger.loop = false
         trigger.autoplay = false
-        trigger.volume = volumeState / 10000
+        trigger.volume = volumeValue
         setTriggerSound(trigger)
 
         const hit = new Audio('/audio/samples-hit1.mp3')
         hit.loop = false
         hit.autoplay = false
-        hit.volume = volumeState / 10000
+        hit.volume = volumeValue
         setHitSound(hit)
     }
 
@@ -166,7 +168,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
         setVolumeState(result)
 
-        let volume = result / 10000
+        let volume = Math.round(result / 100) / 100
         if (volume > 1) volume = 1
         if (volume < 0) volume = 0
         atmosphere.volume = volume
@@ -208,6 +210,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
         document.documentElement.addEventListener('touchend', scrollEnd)
     }
 
+    console.log(JSON.stringify(atmosphere), atmosphere)
     return (
         <div className={styles.SoundPanel}>
             {atmosphereIsPlaying ? <>
@@ -219,7 +222,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                 }}>
                     <div>volume: {Math.round(volumeState / 100)}</div>
                     <div>atmosphere volume = {atmosphere.volume}</div>
-                    <div>atmosphere json = {JSON.stringify(atmosphere)}</div>
+                    <div>atmosphere json</div>
                     <button onClick={onAndOffVolume} className={styles.SoundButton}>
                         <img onMouseDown={(e) => {
                             e.preventDefault()
