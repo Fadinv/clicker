@@ -1,0 +1,71 @@
+@use 'styles/library'
+
+.SoundPanel
+  width: 100%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  padding: 0 1em
+  margin-bottom: 2em
+
+.SoundPanel > *
+  margin-top: 1em
+
+.SoundButton
+  cursor: pointer
+  background-color: rgba(0, 0, 0, 0)
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  border: none
+  &:hover
+    outline: none
+
+.SoundImg
+  width: 5vh
+  height: 5vh
+  fill: #f5cb5c
+
+.slider
+  position: relative
+  width: 50vw
+  height: 3vh
+  border-radius: 1.5vh
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  background-color: white
+  box-shadow: 0 0 0 1vh library.$color_light-yellow
+  border: 1px solid #f5cb5c
+
+.ActiveBackground
+  position: absolute
+  background-color: library.$color_black
+  left: 0
+  top: calc(50% - 1.5vh)
+  border-radius: 1.65vh 0 0 1.65vh
+  min-width: 1.65vh
+  max-width: calc(100% - 1.65vh)
+  height: 3vh
+
+.scroll
+  cursor: pointer
+  position: absolute
+  width: 3.3vh
+  height: 3.3vh
+  top: calc(50% - 1.65vh)
+  background-color: library.$color_light-blue
+  border-radius: 1.5vh
+
+.OnMusic
+  background-color: library.$color_light-yellow
+  font-size: 1rem
+  border: none
+  cursor: pointer
+  padding: .5em 1em
+  border-radius: .5em
+  &:hover, &:focus, &:active
+    outline: none
