@@ -49,38 +49,35 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
     const soundOn = () => {
         setAtmosphereIsPlaying(true)
-        const volumeValue = Math.round(volumeState / 100) / 100
 
         const atmosphere = new Audio('/audio/atmosphere.mp3')
-        atmosphere.id = 'atmosphere'
         atmosphere.loop = true
         atmosphere.autoplay = true
-        atmosphere.volume = 0
-        document.documentElement.append(atmosphere);
+        atmosphere.volume = volumeState / 10000
         setAtmosphere(atmosphere)
 
         const drink = new Audio('/audio/samples-flask.mp3')
         drink.loop = false
         drink.autoplay = false
-        drink.volume = volumeValue
+        drink.volume = volumeState / 10000
         setDrinkSound(drink)
 
         const buy = new Audio('/audio/samples-buy.mp3')
         buy.loop = false
         buy.autoplay = false
-        buy.volume = volumeValue
+        buy.volume = volumeState / 10000
         setBuySound(buy)
 
         const trigger = new Audio('/audio/samples-trigger.mp3')
         trigger.loop = false
         trigger.autoplay = false
-        trigger.volume = volumeValue
+        trigger.volume = volumeState / 10000
         setTriggerSound(trigger)
 
         const hit = new Audio('/audio/samples-hit1.mp3')
         hit.loop = false
         hit.autoplay = false
-        hit.volume = volumeValue
+        hit.volume = volumeState / 10000
         setHitSound(hit)
     }
 
@@ -92,8 +89,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                 setVolumeState(1000)
                 //audio
                 let volume = 0.1
-                const audio = document.getElementById('atmosphere') as HTMLAudioElement
-                if (audio) audio.volume = volume
+                if (atmosphere) atmosphere.volume = volume
 
                 scroll.style.left = '10%'
 
@@ -112,16 +108,14 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
             setVolumeState(prevVolume)
 
-            const audio = document.getElementById('atmosphere') as HTMLAudioElement
-            if (audio) audio.volume = volume
+            if (atmosphere) atmosphere.volume = volume
 
             return
         }
 
         scroll.style.left = '0'
 
-        const audio = document.getElementById('atmosphere') as HTMLAudioElement
-        if (audio) audio.volume = 0
+        if (atmosphere) atmosphere.volume = 0
 
         setPrevVolume(volumeState)
         setVolumeState(0)
@@ -172,7 +166,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
         setVolumeState(result)
 
-        let volume = Math.round(result / 100) / 100
+        let volume = result / 10000
         if (volume > 1) volume = 1
         if (volume < 0) volume = 0
         atmosphere.volume = volume
@@ -224,8 +218,7 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
                     alignItems: 'center',
                 }}>
                     <div>volume: {Math.round(volumeState / 100)}</div>
-                    <div>atmosphere volume = {atmosphere.volume}</div>
-                    <div>atmosphere json {JSON.stringify(atmosphere.isContentEditable)}</div>
+
                     <button onClick={onAndOffVolume} className={styles.SoundButton}>
                         <img onMouseDown={(e) => {
                             e.preventDefault()
