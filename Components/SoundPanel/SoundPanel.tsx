@@ -48,7 +48,16 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
     const [prevVolume, setPrevVolume] = useState<number>(30)
 
     const soundOn = () => {
-        setAtmosphereIsPlaying(true)
+        setAtmosphereIsPlaying(!atmosphereIsPlaying)
+
+        if (atmosphereIsPlaying) {
+            setAtmosphere(null)
+            setDrinkSound(null)
+            setBuySound(null)
+            setTriggerSound(null)
+            setHitSound(null)
+            return;
+        }
 
         const atmosphere = new Audio('/audio/atmosphere.mp3')
         atmosphere.loop = true
@@ -210,45 +219,47 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
     return (
         <div className={styles.SoundPanel}>
-            {atmosphereIsPlaying ? <>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <div>volume: {Math.round(volumeState / 100)}</div>
+            <button onClick={soundOn} className={styles.OnMusic}>
+                {atmosphereIsPlaying ? 'Включить звуковое сопровождение' : 'Выключить звук'}
+            </button>
+            {/*{atmosphereIsPlaying ? <>*/}
+            {/*    <div style={{*/}
+            {/*        display: 'flex',*/}
+            {/*        flexDirection: 'column',*/}
+            {/*        justifyContent: 'center',*/}
+            {/*        alignItems: 'center',*/}
+            {/*    }}>*/}
+            {/*        <div>volume: {Math.round(volumeState / 100)}</div>*/}
 
-                    <button onClick={onAndOffVolume} className={styles.SoundButton}>
-                        <img onMouseDown={(e) => {
-                            e.preventDefault()
-                            return false
-                        }} className={styles.SoundImg} src={volumeState === 0 ? '/volume-off.svg' : '/volume-on.svg'} alt=""/>
-                    </button>
-                </div>
+            {/*        <button onClick={onAndOffVolume} className={styles.SoundButton}>*/}
+            {/*            <img onMouseDown={(e) => {*/}
+            {/*                e.preventDefault()*/}
+            {/*                return false*/}
+            {/*            }} className={styles.SoundImg} src={volumeState === 0 ? '/volume-off.svg' : '/volume-on.svg'} alt=""/>*/}
+            {/*        </button>*/}
+            {/*    </div>*/}
 
-                <div ref={sliderRef} className={styles.slider}>
-                    <div style={{
-                        width: `calc(${volumeState / 100}% + 1.65vh)`,
-                    }} className={styles.ActiveBackground}>
+            {/*    <div ref={sliderRef} className={styles.slider}>*/}
+            {/*        <div style={{*/}
+            {/*            width: `calc(${volumeState / 100}% + 1.65vh)`,*/}
+            {/*        }} className={styles.ActiveBackground}>*/}
 
-                    </div>
+            {/*        </div>*/}
 
-                    <div
-                        onTouchStart={scrollStart}
-                        onMouseDown={scrollStart}
+            {/*        <div*/}
+            {/*            onTouchStart={scrollStart}*/}
+            {/*            onMouseDown={scrollStart}*/}
 
-                        ref={scrollRef}
-                        className={styles.scroll}
+            {/*            ref={scrollRef}*/}
+            {/*            className={styles.scroll}*/}
 
-                        style={{
-                            left: volumeState < 9700 ? `${volumeState / 100}%` : 'calc(100% - 3vh)',
-                        }}
-                    >
-                    </div>
-                </div>
-            </> : <button onClick={soundOn} className={styles.OnMusic}>Включить звуковое сопровождение</button>}
-
+            {/*            style={{*/}
+            {/*                left: volumeState < 9700 ? `${volumeState / 100}%` : 'calc(100% - 3vh)',*/}
+            {/*            }}*/}
+            {/*        >*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</> : <button onClick={soundOn} className={styles.OnMusic}>Включить звуковое сопровождение</button>}*/}
         </div>
     )
 }
