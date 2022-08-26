@@ -219,9 +219,9 @@ const SoundPanel: React.FC<SoundPanelProps> = ({
 
     return (
         <div className={styles.SoundPanel}>
-            <button onClick={soundOn} className={styles.OnMusic}>
-                {atmosphereIsPlaying ? 'Включить звуковое сопровождение' : 'Выключить звук'}
-            </button>
+            {atmosphereIsPlaying ? null : <button onClick={soundOn} className={styles.OnMusic}>
+                Включить звуковое сопровождение
+            </button>}
             {/*{atmosphereIsPlaying ? <>*/}
             {/*    <div style={{*/}
             {/*        display: 'flex',*/}
